@@ -14,6 +14,10 @@ class BaseResponse<T> {
     this.data = data;
     this.statusCode = statusCode;
   }
+
+  BaseResponse.errorResult(String? message) {
+    this.message = message;
+  }
   
 
 

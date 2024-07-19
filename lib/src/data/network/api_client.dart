@@ -1,15 +1,14 @@
+import 'package:bird_guard/src/core/environment_settings.dart';
 import 'package:bird_guard/src/data/network/interceptor.dart';
 import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
 class ApiClient {
   late final Dio _dio;
-  final _baseUrl = 'https://43f2-182-2-132-136.ngrok-free.app/';
-
 
   ApiClient() {
     _dio = Dio(
       BaseOptions(
-        // baseUrl: 'https://f851-182-2-166-45.ngrok-free.app/',
+        baseUrl: EnvironmentSettings.baseUrl,
         connectTimeout: Duration(seconds: 5),
         receiveTimeout: Duration(seconds: 15),
         sendTimeout: Duration(seconds: 5),
@@ -20,18 +19,18 @@ class ApiClient {
   }
 
   Future<Response> login(Map<String,String> map) async {
-    Response response = await _dio.post('${_baseUrl}login',data: map);
+    Response response = await _dio.post('login',data: map);
     return response;
   }
 
   Future<Response> register(Map<String,dynamic> map) async {
-    Response response = await _dio.post('${_baseUrl}signup',data: map);
+    Response response = await _dio.post('signup',data: map);
     return response;
   }
 
   Future<Response> getSpeciesList(String token) async {
     Response response = await _dio.get(
-        '${_baseUrl}species',
+        'species',
         options: Options(
             headers: {
               "token" : token
@@ -41,12 +40,62 @@ class ApiClient {
     return response;
   }
 
-  Future<Response> getSpeciesListPreviewImage(String token,String id) async {
+  Future<Response> getSpeciesListPreviewImagePath(String token,String id) async {
     Response response = await _dio.get(
-      '${_baseUrl}species/$id/images/train/001.jpg',
+      'species/$id/images',
+      options: Options(
+          headers: {
+            "token" : token
+          }
+      ),
+    );
+    return response;
+  }
+
+  Future<Response> getSpeciesListPreviewImage(String token,String id,String imgPath) async {
+    Response response = await _dio.get(
+          imgPath,
       options: Options(
           responseType: ResponseType.bytes,
           followRedirects: false,
+          headers: {
+            "token" : token
+          }
+      ),
+    );
+    return response;
+  }
+
+  Future<Response> getPredictionHistoryImage(String token,String id) async {
+    Response response = await _dio.get(
+      'predictions/$id/image',
+      options: Options(
+          responseType: ResponseType.bytes,
+          followRedirects: false,
+          headers: {
+            "token" : token
+          }
+      ),
+    );
+    return response;
+  }
+
+  Future<Response> getUserData(String token) async {
+    Response response = await _dio.get(
+        'users/auth',
+        options: Options(
+            headers: {
+              "token" : token
+            }
+      ),
+    );
+    return response;
+  }
+
+  Future<Response> getPredictionHistory(String id,String token) async {
+    Response response = await _dio.get(
+      'users/$id/predictions',
+      options: Options(
           headers: {
             "token" : token
           }
@@ -61,12 +110,11 @@ class ApiClient {
     FormData formData = FormData.fromMap({
       'image': await MultipartFile.fromFile(
           imagePath,
-          // filename: 'image',
           contentType: MediaType("image", "jpeg")
       ),
     });
     Response response = await _dio.post(
-      '${_baseUrl}predictions',
+      'predictions',
       data: formData,
       options: Options(
         headers: {

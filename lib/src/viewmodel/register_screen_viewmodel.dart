@@ -32,17 +32,14 @@ class RegisterScreenViewModel extends GetxController {
       name: name.value,
       phone: phoneNumber.value
     );
-
     BaseResponse result = await repository.register(data.toJson());
     if(result.status == Status.failed) {
       response.value = result;
       status.value = Status.error;
     } else {
-      print(result.data);
       response.value = result;
       status.value = Status.success;
     }
-
   }
 
   String? getEmailInitialValue() {

@@ -24,9 +24,23 @@ class BirdSpeciesListScreenViewModel extends GetxController {
     getSpeciesList();
   }
 
-  Future<Uint8List> getPreviewImage(String id) async {
-    BaseResponse<dynamic> result = await repository.getSpeciesListPreviewImage(id);
-    return result.data;
+  Future<Uint8List?> getPreviewImage(String id) async {
+    BaseResponse<dynamic> pathResult = await repository.getSpeciesListPreviewImagePath(id);
+    BaseResponse<dynamic> result = await repository.getSpeciesListPreviewImage(id,pathResult.data);
+    if(result.statusCode == 200) {
+      return result.data;
+    }
+  }
+
+
+
+  Future<Uint8List?> getCachePreviewImage(int id) async {
+    Uint8List? imgCache = await repository.readBirdSpeciesListCache(id);
+    return imgCache;
+  }
+
+  Future<void> addSpeciesListCache(Uint8List data, int id) async {
+    await repository.addSpeciesListCache(data, id);
   }
 
   getSpeciesList() async {

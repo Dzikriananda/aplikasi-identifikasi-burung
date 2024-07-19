@@ -31,12 +31,17 @@ abstract class IndonesiaId {
     'formHint_6'   : 'Masukkan nomor telpon',
     'formHint_7'   : 'Masukkan password',
     'formHint_8'   : 'Masukkan kembali password',
-    'settingItem_1' : 'Akun',
+    'settingItem_1' : 'Profil',
     'settingItem_2' : 'Mode malam',
     'settingItem_3' : 'Bahasa',
+    'settingItem_3_dialog_middleText' : 'Silahkan pilih Bahasa',
     'settingItem_4' : 'Bantuan dan dukungan bahasa',
     'settingItem_5' : 'Pertanyaan yang sering diajukan',
     'settingItem_6' : 'Tentang kami',
+    'settingItem_7' : 'Keluar',
+    'settingItem_7_dialog_middleText' : 'Apakah anda yakin untuk keluar?',
+    'settingItem_7_dialog_textConfirm' : 'Keluar',
+    'dialog_cancel_1' : 'Batal',
     'cameraScreenDialog_1' : 'Memindai gambar, mohon tunggu...',
     'cameraScreenDialog_2' : 'Akses kamera ditolak, mohon izinkan aplikasi untuk mengakses kamera',
     'cameraScreenDialog_3' : 'Akses kamera ditolak secara permanen, silahkan aktifkan secara manual melalui pengaturan',
@@ -46,6 +51,15 @@ abstract class IndonesiaId {
     'history_dialog_title' : 'Riwayat Pemindaian',
     'history_dialog_content' : 'Halaman ini menampilkan daftar lengkap semua pemindaian yang anda telah lakukan',
     'history_screen_1' : 'Riwayat Pemindaian',
+    'history_empty_title' : 'Riwayat pemindaian kosong',
+    'result_screen_appbar' : 'Hasil prediksi',
+    'result_screen_1' : 'Status konversasi :',
+    'home_item_1' : 'Prediksi',
+    'home_item_2' : 'Daftar spesies burung',
+    'home_item_3' : 'Riwayat'
+
+
+
 
 
 

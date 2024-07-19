@@ -28,10 +28,17 @@ class LoginScreenViewModel extends GetxController {
       status.value = Status.error;
     } else {
       response.value = result;
+      await repository.reOpenDBAfterLogout();
       repository.saveToken(response.value!.data.token);
+      await getUserData(response.value!.data.token);
       status.value = Status.success;
       Get.offAllNamed(RouteName.mainScreen);
     }
+  }
+
+  Future<void> getUserData(String token) async {
+    BaseResponse response = await repository.getUserData();
+    await repository.saveUserData(response.data);
   }
 
   void enterPassword(String input)  => password.value = input;

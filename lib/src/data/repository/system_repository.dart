@@ -22,6 +22,14 @@ class SystemRepository {
     return await storage.readData('localization');
   }
 
+  Future<void> setAppFirstTimeOpened() async {
+    return await storage.saveData('isFirstTimeAppOpened', false);
+  }
+
+  Future<bool?> getAppFirstTimeOpened() async {
+    return await storage.readData('isFirstTimeAppOpened');
+  }
+
 
 
 }

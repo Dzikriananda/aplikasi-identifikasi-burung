@@ -27,8 +27,11 @@ class ApiClientInterceptor extends Interceptor {
       'ERROR[${err.response?.statusCode}] => PATH: ${err.requestOptions.path}',
     );
     print(
-      'ERROR DATA => [${err.response?.data}]}',
+      'ERROR[${err.response?.statusMessage}] => PATH: ${err.requestOptions.path}',
     );
+    // print(
+    //   'ERROR DATA => [${err.response?.data}]}',
+    // );
     return super.onError(err, handler);
   }
 }

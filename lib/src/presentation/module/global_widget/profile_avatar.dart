@@ -15,7 +15,7 @@ class ProfileAvatar extends StatelessWidget {
           radius: 30.h,
           backgroundColor: Colors.grey,
         ),
-        Text(name[0],style: Theme.of(context).textTheme.headlineLarge,)
+        Text(name[0] ,style: Theme.of(context).textTheme.headlineLarge,)
       ],
     );
   }

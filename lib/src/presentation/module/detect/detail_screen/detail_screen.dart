@@ -1,7 +1,5 @@
 import 'dart:io';
-
-import 'package:bird_guard/src/core/constant/image.dart';
-import 'package:bird_guard/src/core/gen/assets.gen.dart';
+import 'package:bird_guard/src/core/util/util.dart';
 import 'package:bird_guard/src/presentation/module/detect/detail_screen/widget/detail_padding.dart';
 import 'package:bird_guard/src/viewmodel/detail_screen_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -17,126 +15,92 @@ class DetailScreen extends GetView<DetailScreenViewModel> {
     return Obx(
         () => Scaffold(
             appBar: AppBar(
-              title: Text('11/03/2024 11:23'),
+              title: Text('result_screen_appbar'.tr),
               centerTitle: true,
             ),
-            body: Center(
+            body: SingleChildScrollView(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
                     width: MediaQuery.of(context).size.width,
                     height: 250.h,
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                          fit: BoxFit.fitWidth,
+                          fit: BoxFit.fill,
                           image: FileImage(File(controller.imagePath)),
                         ),
                         borderRadius: BorderRadius.circular(20)
                     ),
                   ),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
                   DetailPadding(
-                      child:  Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          controller.predictResult.value![2]!.keys!.first!,
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 22.sp
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                  controller.response.value!.data.result,
+                                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 25.sp
+                                  )
+                              ),
+                              Text(
+                                controller.birdData.value!.scientificName!,
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                            ],
                           ),
                         ),
-                      )
-                  ),
-                  SizedBox(height: 5),
-                  DetailPadding(
-                      child: Row(
-                        children: [
-                          Text(
-                            'Accuracy :',
-                            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 16.sp
+                        const SizedBox(width: 5),
+                        CircularPercentIndicator(
+                          radius: 50.0,
+                          lineWidth: 12.0,
+                          percent: controller.birdData.value!.confidence!/100,
+                          center: Text(
+                            "${controller.birdData.value!.confidence!.toStringAsFixed(2)}%",
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                fontWeight: FontWeight.w900
                             ),
                           ),
-                          Spacer(),
-                          CircularPercentIndicator(
-                            radius: 45.0,
-                            lineWidth: 10.0,
-                            percent: controller.predictResult.value![2]!.values!.first!/100,
-                            center: Text("${controller.predictResult.value![2]!.values!.first!}%"),
-                            progressColor: Colors.green,
-                          )
-                        ],
-                      )
+                          progressColor: Colors.green,
+                        )
+                      ],
+                    ),
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   DetailPadding(
-                      child:  Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          controller.predictResult.value![1]!.keys!.first!,
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 18.sp
-                          ),
+                    child:  Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'result_screen_1'.tr,
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
-                      )
-                  ),
-                  DetailPadding(
-                      child: Row(
-                        children: [
-                          Text(
-                            'Accuracy :',
-                            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14.sp
+                        const SizedBox(width: 5),
+                        Flexible(
+                          child:  Text(
+                            controller.birdData.value!.category!,
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                color: Helper.getStatusColor(controller.birdData.value!.category!),
+                                fontWeight: FontWeight.bold
                             ),
                           ),
-                          Spacer(),
-                          CircularPercentIndicator(
-                            radius: 39.0,
-                            lineWidth: 8.0,
-                            percent: controller.predictResult.value![1]!.values!.first!/100,
-                            center: Text("${controller.predictResult.value![1]!.values!.first!}%"),
-                            progressColor: Colors.green,
-                          )
-                        ],
-                      )
+                        )
+                      ],
+                    ),
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 10),
                   DetailPadding(
-                      child:  Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          controller.predictResult.value![0]!.keys!.first!,
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 15.sp
-                          ),
-                        ),
-                      )
-                  ),
-                  DetailPadding(
-                      child: Row(
-                        children: [
-                          Text(
-                            'Accuracy :',
-                            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 11.sp
-                            ),
-                          ),
-                          Spacer(),
-                          CircularPercentIndicator(
-                            radius: 30.0,
-                            lineWidth: 6.0,
-                            percent: controller.predictResult.value![0]!.values!.first!/100,
-                            center: new Text("${controller.predictResult.value![0]!.values!.first!}%"),
-                            progressColor: Colors.green,
-                          )
-                        ],
-                      )
-                  ),
+                    child: Text(
+                      controller.birdData.value!.description!,
+                      textAlign: TextAlign.justify,
+                    ),
+                  )
                 ],
               ),
             )

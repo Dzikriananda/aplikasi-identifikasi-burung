@@ -1,3 +1,4 @@
+import 'package:bird_guard/src/presentation/module/global_widget/error_wrap.dart';
 import 'package:bird_guard/src/presentation/module/global_widget/loading_wrap.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -47,6 +48,8 @@ class StatefulHandleWidget extends StatefulWidget {
 
   final Alignment? loadingAlign;
 
+  final Widget? emptyView;
+
   /// main body / main content / success view
   /// usualy widget that show data
   final Widget body;
@@ -67,6 +70,7 @@ class StatefulHandleWidget extends StatefulWidget {
     this.errorEnabled = false,
     this.visibleOnEmpty = true,
     this.visibleOnError = true,
+    this.emptyView,
     this.loadingAlign,
     this.errorImage,
     this.errorView = const Icon(Icons.error),
@@ -93,7 +97,7 @@ class StatefulHandleWidgetState extends State<StatefulHandleWidget> {
           child: LoadingWrap(isLoading: widget.loadingEnabled,loadingWidget: loadingWidget),
         ),
         Center(
-          child: LoadingWrap(isLoading: widget.errorEnabled,loadingWidget: widget.errorView),
+          child: ErrorWrap(isError: widget.errorEnabled,errorWidget: widget.errorView),
         )
         // getLoadingView(loadingWidget),
       ],
@@ -125,40 +129,47 @@ class StatefulHandleWidgetState extends State<StatefulHandleWidget> {
       widget.emptyEnabled &&
       !widget.errorEnabled &&
       !widget.loadingEnabled
-      ? buildEmpty()
+      ? (widget.emptyView ?? buildEmpty())
       : Container();
 
-  Widget buildEmpty() => Center(
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        // Image(
-        //   width: 180,
-        //   height: 150,
-        //   fit: BoxFit.fill,
-        //   image: widget.emptyImage ?? AppImages.imgEmpty.image().image,
-        // ),
-        Container(
-          margin: const EdgeInsets.fromLTRB(24, 40, 24, 20),
-          child: Text(
-            widget.emptyTitle ?? "",
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium
-                ?.copyWith(fontStyle: FontStyle.normal),
-            textAlign: TextAlign.center,
+  Widget buildEmpty() => CustomScrollView(
+    slivers: [
+      SliverFillRemaining(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Image(
+              //   width: 180,
+              //   height: 150,
+              //   fit: BoxFit.fill,
+              //   image: widget.emptyImage ?? AppImages.imgEmpty.image().image,
+              // ),
+              Icon(Icons.error,size: 150),
+              Container(
+                margin: const EdgeInsets.fromLTRB(24, 40, 24, 20),
+                child: Text(
+                  widget.emptyTitle ?? "Empty",
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium
+                      ?.copyWith(fontStyle: FontStyle.normal),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.fromLTRB(24, 0, 24, 0),
+                child: Text(
+                  widget.emptySubtitle ?? "",
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
           ),
         ),
-        Container(
-          margin: const EdgeInsets.fromLTRB(24, 0, 24, 0),
-          child: Text(
-            widget.emptySubtitle ?? "",
-            style: Theme.of(context).textTheme.bodyMedium,
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ],
-    ),
+      )
+    ],
   );
 
   Widget getErrorView() =>

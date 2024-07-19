@@ -3,19 +3,13 @@ import 'dart:io';
 
 import 'package:bird_guard/src/core/classes/enum.dart';
 import 'package:bird_guard/src/core/util/locator.dart';
-import 'package:bird_guard/src/data/local/local_storage/local_storage.dart';
 import 'package:bird_guard/src/data/model/base_response.dart';
-import 'package:bird_guard/src/data/model/detail_model/detail_model.dart';
-import 'package:bird_guard/src/data/model/prediction_response/prediction_response.dart';
-import 'package:bird_guard/src/data/repository/auth_repository.dart';
 import 'package:bird_guard/src/data/repository/bird_repository.dart';
 import 'package:bird_guard/src/route/route_name.dart';
 import 'package:camera/camera.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:image/image.dart' as img;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -77,12 +71,25 @@ class CameraScreenViewModel extends GetxController {
     }
   }
 
+  Future takePicture() async {
+    try {
+      final capturedImage = await cameraController.takePicture();
+      picture = capturedImage;
+      mediaStatus.value = CameraStatus.hasImage;
+      update();
+    } catch(_) {
+      status.value = Status.error;
+    }
+  }
+
   closeDialog() {
     status.value = Status.idle;
     update();
 
   }
 
+
+  //For future use (caching)
   Future<String> createImage() async {
     final directory = await getApplicationDocumentsDirectory();
     final dir = directory.path;
@@ -130,13 +137,17 @@ class CameraScreenViewModel extends GetxController {
   //   // update();
   // }
 
+  // Future<void> upload() async {
+  //   BaseResponse<dynamic> result = await repository.predictV2(picture!.path);
+  // }
+
 
   Future<void> uploadImage() async {
     await createImage();
     status.value = Status.loading;
     statusMessage = 'cameraScreenDialog_1'.tr;
     update();
-    BaseResponse<dynamic> result = await repository.predict(picture!.path);
+    BaseResponse<dynamic> result = await repository.predictV2(picture!.path);
     // Map<String,dynamic> dummyData = {
     //   "confidence": {
     //     "002-Curik Bali": 0.22283729631453753,
@@ -157,17 +168,6 @@ class CameraScreenViewModel extends GetxController {
       status.value = Status.error;
     }
     update();
-  }
-
-  Future takePicture() async {
-    try {
-      final capturedImage = await cameraController.takePicture();
-      picture = capturedImage;
-      mediaStatus.value = CameraStatus.hasImage;
-      update();
-    } catch(_) {
-      status.value = Status.error;
-    }
   }
 
   retakePicture() {

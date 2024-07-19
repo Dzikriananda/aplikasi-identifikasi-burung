@@ -2,6 +2,8 @@ import 'package:bird_guard/src/core/classes/enum.dart';
 import 'package:bird_guard/src/core/styles/custom_color.dart';
 import 'package:bird_guard/src/core/styles/theme.dart';
 import 'package:bird_guard/src/core/util/locator.dart';
+import 'package:bird_guard/src/data/local/local_storage/local_storage.dart';
+import 'package:bird_guard/src/data/model/user_model/user_model.dart';
 import 'package:bird_guard/src/data/repository/auth_repository.dart';
 import 'package:bird_guard/src/data/repository/system_repository.dart';
 import 'package:bird_guard/src/route/route_name.dart';
@@ -14,11 +16,14 @@ class SystemController extends GetxController {
   late Locale currentLocale;
   SystemRepository repository = locator<SystemRepository>();
   AuthRepository authRepository = locator<AuthRepository>();
+  LocalStorage storage = locator<LocalStorage>();
+  UserModel? userData;
 
   @override
-  void onInit() async {
+  void onInit() {
     super.onInit();
     initThemeAndLocalization();
+    getUserData();
   }
 
   initThemeAndLocalization() async {
@@ -34,8 +39,16 @@ class SystemController extends GetxController {
   }
 
   void logout() async {
+    await storage.deleteCache();
     await authRepository.logOut();
     Get.offAllNamed(RouteName.loginScreen);
+  }
+
+  Future<UserModel?> getUserData() async {
+    UserModel? data = await authRepository.getLocalUserData();
+    userData = data;
+    update();
+    return data;
   }
 
   void switchTheme() async {

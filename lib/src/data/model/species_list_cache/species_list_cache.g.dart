@@ -1,35 +1,35 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'prediction_response.dart';
+part of 'species_list_cache.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PredictionResponseAdapter extends TypeAdapter<PredictionResponse> {
+class SpeciesListCacheAdapter extends TypeAdapter<SpeciesListCache> {
   @override
   final int typeId = 2;
 
   @override
-  PredictionResponse read(BinaryReader reader) {
+  SpeciesListCache read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PredictionResponse(
-      confidence: (fields[0] as Map).cast<String, double>(),
-      result: fields[1] as String,
+    return SpeciesListCache(
+      id: fields[0] as int,
+      imageData: fields[1] as Uint8List,
     );
   }
 
   @override
-  void write(BinaryWriter writer, PredictionResponse obj) {
+  void write(BinaryWriter writer, SpeciesListCache obj) {
     writer
       ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.confidence)
+      ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.result);
+      ..write(obj.imageData);
   }
 
   @override
@@ -38,7 +38,7 @@ class PredictionResponseAdapter extends TypeAdapter<PredictionResponse> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PredictionResponseAdapter &&
+      other is SpeciesListCacheAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

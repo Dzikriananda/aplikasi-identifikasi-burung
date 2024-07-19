@@ -2,8 +2,9 @@ import 'package:bird_guard/src/core/localization/app_localization.dart';
 import 'package:bird_guard/src/core/styles/theme.dart';
 import 'package:bird_guard/src/core/util/locator.dart';
 import 'package:bird_guard/src/data/local/local_storage/local_storage.dart';
-import 'package:bird_guard/src/data/model/detail_model/detail_model.dart';
-import 'package:bird_guard/src/data/model/prediction_response/prediction_response.dart';
+import 'package:bird_guard/src/data/model/history_cache/history_cache.dart';
+import 'package:bird_guard/src/data/model/species_list_cache/species_list_cache.dart';
+import 'package:bird_guard/src/data/model/user_model/user_model.dart';
 import 'package:bird_guard/src/route/app_route.dart';
 import 'package:bird_guard/src/route/route_name.dart';
 import 'package:bird_guard/src/viewmodel/system_controller.dart';
@@ -23,8 +24,9 @@ void main() async {
 
 Future<void> initHive() async {
   await Hive.initFlutter();
-  Hive.registerAdapter(PredictionResponseAdapter());
-  Hive.registerAdapter(DetailModelAdapter());
+  Hive.registerAdapter(UserModelAdapter());
+  Hive.registerAdapter(SpeciesListCacheAdapter());
+  Hive.registerAdapter(HistoryCacheAdapter());
 }
 
 class MyApp extends StatelessWidget {

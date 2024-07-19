@@ -1,4 +1,6 @@
 
+import 'package:bird_guard/src/core/constant/map_constant.dart';
+import 'package:bird_guard/src/presentation/module/global_widget/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,7 +14,6 @@ class Helper {
           Get.back();
         }
         Get.defaultDialog(
-            barrierDismissible: false,
             content: CircularProgressIndicator(),
             title: 'Loading'
         );
@@ -46,17 +47,19 @@ class Helper {
           Get.back();
         }
         Get.defaultDialog(
-            content: Icon(Icons.error_outlined),
+            barrierDismissible: false,
+            content: Icon(Icons.error_sharp,size: 50),
             title:  'Error : ${message!}',
             titleStyle: TextStyle(
-              fontWeight: FontWeight.w400,
+              fontWeight: FontWeight.w500,
               fontSize: 20,
             ),
-            onConfirm: () {
-              onOk();
-              Get.back();
-            },
-            buttonColor: Color(0xff3D5AA9),
+            confirm: PrimaryButton(
+                onPressed: () {
+                  onOk();
+                  Get.back();
+                }
+            ),
             onWillPop: () async {
               onClose();
               return true;
@@ -69,4 +72,34 @@ class Helper {
       case Status.idle: null;
     }
   }
+
+  static Color getStatusColor(String conversationStatusString) {
+    late ConversationStatus status;
+    MapConstant.conversationStatusMap.forEach((key, value) {
+      if(conversationStatusString == key) {
+        status = value;
+      }
+    });
+    switch(status) {
+      case ConversationStatus.lc : {
+        return Colors.green;
+      }
+      case ConversationStatus.vu : {
+        return Colors.yellow[700]!;
+      }
+      case ConversationStatus.nt : {
+        return Colors.yellow[700]!;
+      }
+      case ConversationStatus.en : {
+        return Colors.red;
+      }
+      case ConversationStatus.cr: {
+        return Colors.red;
+      }
+      default: {
+        return Colors.black;
+      }
+    }
+  }
+
 }

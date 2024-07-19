@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 
 class StringUtil {
   static String configureBirdName(String name) {
@@ -9,6 +10,17 @@ class StringUtil {
     return titleArr.join(" ");
   }
 
+  static String dateFormat(DateTime timeStamp) {
+    final dateFormatter = DateFormat('yyyy/MM/dd HH:mm:ss');
+    final formatedDate = dateFormatter.format(timeStamp);
+    return formatedDate.toString();
+  }
+
+  static String nameFormat(String rawName) {
+    final splitted = rawName.split('-');
+    return splitted[1];
+  }
+
   static List<double> roundValue(List<double> values) {
     List<double> roundedValues = values.map((value) => double.parse(value.toStringAsFixed(2))).toList();
     double initialSum = roundedValues.reduce((a, b) => a + b);
@@ -17,4 +29,6 @@ class StringUtil {
     roundedValues[maxIndex] = double.parse((roundedValues[maxIndex] + difference).toStringAsFixed(2));
     return roundedValues;
   }
+
+
 }

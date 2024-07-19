@@ -126,7 +126,6 @@ class LoginScreen extends GetView<LoginScreenViewModel> {
                         onPressed: () async {
                           // Get.toNamed(RouteName.mainScreen);
                           if(_formKey.currentState!.validate()) {
-                            // Get.toNamed(RouteName.mainScreen);
                             controller.login();
                           }
                         },

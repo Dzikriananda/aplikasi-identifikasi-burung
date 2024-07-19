@@ -1,4 +1,6 @@
 import 'package:bird_guard/src/core/styles/custom_color.dart';
+import 'package:bird_guard/src/core/util/locator.dart';
+import 'package:bird_guard/src/data/local/local_storage/local_storage.dart';
 import 'package:bird_guard/src/presentation/module/home/home_screen/home_screen.dart';
 import 'package:bird_guard/src/presentation/module/home/settings_screen/settings_screen.dart';
 import 'package:bird_guard/src/route/route_name.dart';
@@ -8,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:bird_guard/src/core/classes/enum.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});

@@ -1,35 +1,35 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'detail_model.dart';
+part of 'history_cache.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class DetailModelAdapter extends TypeAdapter<DetailModel> {
+class HistoryCacheAdapter extends TypeAdapter<HistoryCache> {
   @override
   final int typeId = 1;
 
   @override
-  DetailModel read(BinaryReader reader) {
+  HistoryCache read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return DetailModel(
-      imagePath: fields[0] as String,
-      data: fields[1] as PredictionResponse,
+    return HistoryCache(
+      id: fields[0] as int,
+      imageData: fields[1] as Uint8List,
     );
   }
 
   @override
-  void write(BinaryWriter writer, DetailModel obj) {
+  void write(BinaryWriter writer, HistoryCache obj) {
     writer
       ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.imagePath)
+      ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.data);
+      ..write(obj.imageData);
   }
 
   @override
@@ -38,7 +38,7 @@ class DetailModelAdapter extends TypeAdapter<DetailModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DetailModelAdapter &&
+      other is HistoryCacheAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

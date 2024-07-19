@@ -9,13 +9,15 @@ class CustomDialog extends StatelessWidget {
     this.ignoreClick = true,
     this.buttonTitle,
     this.onPressed,
-    this.message
+    this.message,
+    this.statusCode,
   });
 
   final bool isError;
   final bool ignoreClick;
   final String? message;
   final String? buttonTitle;
+  final int? statusCode;
   final VoidCallback? onPressed;
 
 
@@ -26,8 +28,10 @@ class CustomDialog extends StatelessWidget {
       child: Container(
         // width: 300.w,
         constraints: BoxConstraints(
-          minHeight: 200.h,
-          maxHeight: 250.h
+          // minHeight: 200.h,
+          // maxHeight: 250.h
+            minHeight: 150.h,
+            maxHeight: 250.h
         ),
         padding: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
         decoration: BoxDecoration(
@@ -35,8 +39,10 @@ class CustomDialog extends StatelessWidget {
           color: Color(0xffe8e7ef),
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            SizedBox(height: 20),
             SizedBox(
               child: (isError) ? Icon(Icons.error,size: 50)
                   : CircularProgressIndicator(),
@@ -50,9 +56,10 @@ class CustomDialog extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
+            SizedBox(height: 10.h),
             Visibility(
               visible: isError,
-              child:  PrimaryButton(
+              child: PrimaryButton(
                     onPressed: () {
                       if(onPressed!=null) {
                         onPressed!();

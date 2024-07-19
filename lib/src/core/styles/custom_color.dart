@@ -1,6 +1,4 @@
-import 'package:bird_guard/src/viewmodel/system_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class CustomColor {
   static bool isLightMode = true;
