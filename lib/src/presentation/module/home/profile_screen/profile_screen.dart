@@ -26,9 +26,12 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   ProfileAvatar(name: data.name!),
                   SizedBox(height: 10.h),
-                  Text(
-                    data.name!,
-                    style: Theme.of(context).textTheme.headlineMedium,
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 25,vertical: 0),
+                    child: Text(
+                      data.name!,
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
                   )
                 ],
               ),

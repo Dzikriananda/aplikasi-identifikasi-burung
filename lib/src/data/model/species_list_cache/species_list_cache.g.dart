@@ -18,7 +18,7 @@ class SpeciesListCacheAdapter extends TypeAdapter<SpeciesListCache> {
     };
     return SpeciesListCache(
       id: fields[0] as int,
-      imageData: fields[1] as Uint8List,
+      imagePath: fields[1] as String,
     );
   }
 
@@ -29,7 +29,7 @@ class SpeciesListCacheAdapter extends TypeAdapter<SpeciesListCache> {
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.imageData);
+      ..write(obj.imagePath);
   }
 
   @override

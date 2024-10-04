@@ -17,7 +17,6 @@ class SplashScreenViewModel extends GetxController {
       await systemRepository.setAppFirstTimeOpened();
       await authRepository.deleteToken();
     }
-
     var token = await authRepository.readToken();
     Future.delayed(const Duration(seconds: 2), () {
       if(token == null) {

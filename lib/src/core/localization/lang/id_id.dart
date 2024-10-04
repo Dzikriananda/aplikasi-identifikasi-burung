@@ -39,6 +39,7 @@ abstract class IndonesiaId {
     'settingItem_5' : 'Pertanyaan yang sering diajukan',
     'settingItem_6' : 'Tentang kami',
     'settingItem_7' : 'Keluar',
+    'settingItem_8' : 'Manajemen penyimpanan dan cache',
     'settingItem_7_dialog_middleText' : 'Apakah anda yakin untuk keluar?',
     'settingItem_7_dialog_textConfirm' : 'Keluar',
     'dialog_cancel_1' : 'Batal',

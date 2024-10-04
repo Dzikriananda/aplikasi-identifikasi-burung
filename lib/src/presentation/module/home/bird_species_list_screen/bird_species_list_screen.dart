@@ -13,7 +13,9 @@ import 'package:bird_guard/src/presentation/module/global_widget/stateful_handle
 import 'package:bird_guard/src/presentation/module/home/bird_species_list_screen/widget/bird_species_list_item.dart';
 import 'package:bird_guard/src/viewmodel/bird_species_list_screen_viewmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 
 class BirdSpeciesListScreen extends GetView<BirdSpeciesListScreenViewModel> {
   const BirdSpeciesListScreen({super.key});
@@ -45,14 +47,66 @@ class BirdSpeciesListScreen extends GetView<BirdSpeciesListScreenViewModel> {
             onRefresh: () => controller.getSpeciesList(),
             child: StatefulHandleWidget(
                 errorEnabled: controller.isError.value,
+                loadingEnabled: controller.isLoading.value || controller.isError.value,
                 stackLoadingWidget: false,
-                loadingEnabled: controller.isLoading.value,
+                loadingView: GridView.builder(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2, // number of items in each row
+                      mainAxisSpacing: 8.0, // spacing between rows
+                      crossAxisSpacing: 8.0, // spacing between columns
+                    ),
+                    itemCount: 10,
+                    itemBuilder: (context,index) {
+                      return Center(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: CustomColor.historyItemColor,
+                              borderRadius: const BorderRadius.all(Radius.circular(15)),
+                            ),
+                            height: 155.h,
+                            width: 155.w,
+                            child: Column(
+                              children: [
+                                Shimmer.fromColors(
+                                  baseColor: Colors.grey[300]!,
+                                  highlightColor: Colors.grey[100]!,
+                                  child: Container(
+                                    height: 120.h,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[300]!,
+                                      borderRadius: const BorderRadius.all(Radius.circular(15)),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(5, 15, 5, 0),
+                                  child: Shimmer.fromColors(
+                                    baseColor: Colors.grey[300]!,
+                                    highlightColor: Colors.grey[100]!,
+                                    child: Container(
+                                      height: 15.h,
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[300]!,
+                                        borderRadius: const BorderRadius.all(Radius.circular(8)),
+                                      ),
+                                    ),
+                                  ),
+                                )
+
+                              ],
+                            ),
+                          )
+                      );
+                    }
+                ),
                 errorView: CustomDialog(
                   isError: true,
                   message: controller.data.value?.message,
                   ignoreClick: false,
-                  buttonTitle: 'Retry',
-                  onPressed: () {
+                  firstButtonTitle: 'Retry',
+                  onPressedFirstButton: () {
                     controller.getSpeciesList();
                   },
                 ),

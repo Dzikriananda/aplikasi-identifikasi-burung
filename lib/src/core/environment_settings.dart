@@ -1,9 +1,9 @@
 class EnvironmentSettings {
 
 
-  static const DEVELOPMENT_URL = 'https://7ef1-182-3-45-15.ngrok-free.app/';
+  static const DEVELOPMENT_URL = 'https://ea49-182-3-45-15.ngrok-free.app/';
   static const STAGING_URL = 'http://10.1.12.28:8080';
-  static const PRODUCTION_URL = 'https://notadinas-api.jasamarga.co.id';
+  static const PRODUCTION_URL = 'http://117.53.45.158:3000/';
 
   static String get baseUrl {
     switch (_environment) {

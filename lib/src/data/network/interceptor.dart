@@ -15,9 +15,9 @@ class ApiClientInterceptor extends Interceptor {
     print(
       'RESPONSE[${response.statusCode}] => PATH: ${response.requestOptions.path}',
     );
-    print(
-      'RESPONSE DATA => ${response.data}',
-    );
+    // print(
+    //   'RESPONSE DATA => ${response.data}',
+    // );
     return super.onResponse(response, handler);
   }
 

@@ -14,7 +14,7 @@ class BirdDetailScreenViewModel extends GetxController {
   Rxn<BirdSpeciesResponse> data = Rxn();
   Rx<Status> status = Status.started.obs;
   BirdRepository repository = locator<BirdRepository>();
-  Rxn<Uint8List> imageData = Rxn();
+  Rxn<String> imagePath = Rxn();
 
   @override
   void onInit() async {
@@ -32,25 +32,26 @@ class BirdDetailScreenViewModel extends GetxController {
   }
   Future<void> configureImage() async {
     status.value = Status.loading;
-    Uint8List? cache = await getCachePreviewImage(data.value!.id!);
+    String? cache = await getCachePreviewImage(data.value!.id!);
     if(cache==null) {
       Uint8List? dataImage = await getPreviewImage(data.value!.id!.toString());
       if(dataImage!=null) {
         addSpeciesListCache(dataImage, data.value!.id!);
-        imageData.value = dataImage;
+        String? path = await getCachePreviewImage(data.value!.id!);
+        imagePath.value = path;
         status.value = Status.success;
       } else {
         status.value = Status.error;
       }
     } else {
-      imageData.value = cache;
+      imagePath.value = cache;
       status.value = Status.success;
     }
   }
 
-  Future<Uint8List?> getCachePreviewImage(int id) async {
-    Uint8List? imgCache = await repository.readBirdSpeciesListCache(id);
-    return imgCache;
+  Future<String?> getCachePreviewImage(int id) async {
+    String? imgCachePath = await repository.readBirdSpeciesListCache(id);
+    return imgCachePath;
   }
 
   Future<void> addSpeciesListCache(Uint8List data, int id) async {

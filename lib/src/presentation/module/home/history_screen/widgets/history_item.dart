@@ -1,67 +1,80 @@
+import 'dart:io';
 import 'dart:typed_data';
+import 'package:bird_guard/src/core/classes/enum.dart';
 import 'package:bird_guard/src/core/styles/custom_color.dart';
-import 'package:bird_guard/src/core/util/locator.dart';
 import 'package:bird_guard/src/core/util/string_util.dart';
 import 'package:bird_guard/src/data/model/history_response.dart';
-import 'package:bird_guard/src/data/repository/bird_repository.dart';
 import 'package:bird_guard/src/route/route_name.dart';
 import 'package:bird_guard/src/viewmodel/history_screen_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class HistoryItem extends StatelessWidget {
-  HistoryItem({super.key,this.imagePath,required this.data});
+class HistoryItem extends StatefulWidget {
+  const HistoryItem({super.key, this.imagePath, required this.data});
 
   final String? imagePath;
   final HistoryResponse data;
-  final controller =  Get.find<HistoryScreenViewModel>();
-  // final storage = locator<BirdRepository>();
-  //
-  // Future<Uint8List?> configureImage() async {
-  //   Uint8List? cache = await storage.readHistoryCache(data.id!);
-  //   if(cache==null) {
-  //     Uint8List? dataImage = await controller.getPreviewImage(data.id.toString());
-  //     if(dataImage!=null) {
-  //       storage.addHistoryCache(dataImage, data.id!);
-  //     }
-  //     return dataImage;
-  //   } else {
-  //     return cache;
-  //   }
-  // }
 
-  Future<Uint8List?> configureImage() async {
-    Uint8List? cache = await controller.getCachePreviewImage(data.id!);
-    if(cache==null) {
-      Uint8List? dataImage = await controller.getPreviewImage(data.id.toString());
-      if(dataImage!=null) {
-        controller.addHistoryCache(dataImage, data.id!);
+  @override
+  State<HistoryItem> createState() => _HistoryItemState();
+}
+
+class _HistoryItemState extends State<HistoryItem> {
+  final controller = Get.find<HistoryScreenViewModel>();
+  final imageStatusNotifier = ValueNotifier<Status>(Status.loading);
+  String? imagePath;
+
+  @override
+  void initState() {
+    super.initState();
+    configureImage();
+  }
+
+
+
+  @override
+  void dispose() {
+    if(imagePath == null) {
+      controller.cancelApiCall(widget.data.id.toString());
+    }
+    super.dispose();
+  }
+
+
+  Future<void> configureImage() async {
+    imageStatusNotifier.value = Status.loading;
+    String? cache = await controller.getCachePreviewImage(widget.data.id!);
+    if (cache == null) {
+      Uint8List? dataImage = await controller.getPreviewImage(widget.data.id.toString());
+      if (dataImage != null) {
+        await controller.addHistoryCache(dataImage, widget.data.id!);
       }
-      return dataImage;
+      String? path = await controller.getCachePreviewImage(widget.data.id!);
+      if (path != null) {
+        if(mounted) {
+          setState(() {
+            imagePath = path;
+          });
+        }
+        imageStatusNotifier.value = Status.success;
+      } else {
+        imageStatusNotifier.value = Status.error;
+      }
     } else {
-      return cache;
+      if(mounted) {
+        setState(() {
+          imagePath = cache;
+        });
+      }
+      imageStatusNotifier.value = Status.success;
     }
   }
 
-  // Future<Uint8List?> configureImage() async {
-  //   Uint8List? cache = await controller.getImageCache(data.id!);
-  //   if(cache==null) {
-  //     Uint8List? dataImage = await controller.getPreviewImage(data.id.toString());
-  //     if(dataImage!=null) {
-  //       controller.addImageCache(dataImage, data.id!);
-  //     }
-  //     return dataImage;
-  //   } else {
-  //     return cache;
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
-    print('membuat item ${data.toJson()}');
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10,horizontal: 15),
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
       child: Container(
         clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
@@ -78,9 +91,15 @@ class HistoryItem extends StatelessWidget {
         ),
         width: 155.w,
         child: InkWell(
-            onTap: () {
-              print('mi sukses');
-              Get.toNamed(RouteName.historyDetailScreen,arguments: data);
+            onTap: () async {
+              if(imagePath == null) {
+                controller.cancelApiCall(widget.data.id.toString());
+                var res = await Get.toNamed(RouteName.historyDetailScreen, arguments: widget.data);
+                print('res adalah $res');
+                configureImage();
+              } else {
+                Get.toNamed(RouteName.historyDetailScreen, arguments: widget.data);
+              }
             },
             child: Row(
               children: [
@@ -88,26 +107,25 @@ class HistoryItem extends StatelessWidget {
                   height: 100.h,
                   width: 120.w,
                   child: ClipRRect(
-                      borderRadius: BorderRadius.circular(15.0),
-                      child: FutureBuilder(
-                          future: configureImage(),
-                          builder: (context,snapshot) {
-                            if(snapshot.connectionState == ConnectionState.done) {
-                              if(snapshot.hasData) {
-                                return FittedBox(
-                                  fit: BoxFit.fill,
-                                  child: Image.memory(snapshot.data as Uint8List),
-                                );
-                              } else {
-                                return const Center(
-                                    child: Icon(Icons.not_interested)
-                                );
-                              }
-                            } else {
-                              return const CircularProgressIndicator();
-                            }
-                          }
-                      )
+                    borderRadius: BorderRadius.circular(15.0),
+                    child: ValueListenableBuilder<Status>(
+                      valueListenable: imageStatusNotifier,
+                      builder: (context, imageStatus, child) {
+                        if (imageStatus == Status.loading) {
+                          return const Center(child: CircularProgressIndicator());
+                        } else if (imageStatus == Status.success) {
+                          return FittedBox(
+                            fit: BoxFit.fill,
+                            child: Image.file(
+                              File(imagePath!),
+                              gaplessPlayback: true,
+                            ),
+                          );
+                        } else {
+                          return const Center(child: Icon(Icons.error));
+                        }
+                      },
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -119,11 +137,11 @@ class HistoryItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        StringUtil.nameFormat(data.result!),
+                        StringUtil.nameFormat(widget.data.result!),
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                       Text(
-                        StringUtil.dateFormat(data.createdAt!),
+                        StringUtil.dateFormat(widget.data.createdAt!),
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.titleSmall,
                       ),
@@ -132,8 +150,7 @@ class HistoryItem extends StatelessWidget {
                 ),
                 const SizedBox(width: 5),
               ],
-            )
-        ),
+            )),
       ),
     );
   }

@@ -41,6 +41,7 @@ abstract class EnglishUs {
     'settingItem_5' : 'Frequently asked questions',
     'settingItem_6' : 'About',
     'settingItem_7' : 'Logout',
+    'settingItem_8' : 'Storage & Cache Management',
     'settingItem_7_dialog_middleText' : 'Are you sure you want to logout?',
     'settingItem_7_dialog_textConfirm' : 'Logout',
     'dialog_cancel_1' : 'Cancel',
@@ -55,7 +56,7 @@ abstract class EnglishUs {
     'history_screen_1' : 'Scan History',
     'history_empty_title' : 'History is empty',
     'result_screen_appbar' : 'Prediction result',
-    'result_screen_1' : 'Conversation status :',
+    'result_screen_1' : 'Conservation status :',
     'home_item_1' : 'Predict',
     'home_item_2' : 'Bird species list',
     'home_item_3' : 'History'

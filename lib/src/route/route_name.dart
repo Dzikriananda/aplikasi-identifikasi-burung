@@ -10,6 +10,8 @@ abstract class RouteName {
   static final historyScreen = '/historyScreen';
   static final historyDetailScreen = '/historyDetailScreen';
   static final profileScreen = '/profileScreen';
+  static final storageCacheManagementScreen = '/storageCacheManagementScreen';
+
 
 
 

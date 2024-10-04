@@ -9,6 +9,7 @@ import 'package:bird_guard/src/presentation/module/global_widget/form_title.dart
 import 'package:bird_guard/src/presentation/module/global_widget/stateful_handle_widget.dart';
 import 'package:bird_guard/src/route/route_name.dart';
 import 'package:bird_guard/src/viewmodel/login_screen_viewmodel.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -83,9 +84,13 @@ class LoginScreen extends GetView<LoginScreenViewModel> {
                               return null;
                             },
                             suffixIcon: Icon(Icons.email),
+                            validateTextField: () {
+
+                            },
                             onChanged: (value) {
                               controller.enterIdentifier(value);
                             },
+
                           ),
                         ),
                         Padding(

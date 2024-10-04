@@ -72,7 +72,7 @@ class CameraScreen extends StatelessWidget {
                   isError: true,
                   message: controller.statusMessage,
                   ignoreClick: false,
-                  onPressed: () {
+                  onPressedFirstButton: () {
                     if(controller.mediaStatus.value == CameraStatus.denied) {
                       controller.askCameraPermission();
                     } else if(controller.response.value?.statusCode == 401) {

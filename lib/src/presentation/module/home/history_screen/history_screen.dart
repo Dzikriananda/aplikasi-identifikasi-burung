@@ -1,17 +1,13 @@
-import 'package:bird_guard/src/core/classes/enum.dart';
-import 'package:bird_guard/src/data/local/local_storage/local_storage.dart';
-import 'package:bird_guard/src/presentation/module/global_widget/container_item.dart';
 import 'package:bird_guard/src/presentation/module/global_widget/custom_dialog.dart';
 import 'package:bird_guard/src/presentation/module/global_widget/primary_button.dart';
 import 'package:bird_guard/src/presentation/module/global_widget/stateful_handle_widget.dart';
 import 'package:bird_guard/src/presentation/module/home/history_screen/widgets/history_item.dart';
+import 'package:bird_guard/src/presentation/module/home/history_screen/widgets/history_loading_skeleton.dart';
 import 'package:bird_guard/src/viewmodel/history_screen_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../core/util/locator.dart';
-
-class HistoryScreen extends GetView<HistoryScreenViewModel> {
+class HistoryScreen extends StatelessWidget {
   const HistoryScreen({super.key});
 
   @override
@@ -38,24 +34,24 @@ class HistoryScreen extends GetView<HistoryScreenViewModel> {
         ),
         body: GetBuilder(
           init: HistoryScreenViewModel(),
-          builder: (_) {
+          builder: (controller) {
             return RefreshIndicator(
                 child: StatefulHandleWidget(
-                  loadingEnabled: controller.isLoading,
+                  loadingEnabled: controller.isLoading || controller.isError  ,
                   emptyEnabled: controller.isEmpty,
+                  loadingView: const HistoryLoadingSkeleton(),
                   emptyTitle: 'history_empty_title'.tr,
                   errorEnabled: controller.isError,
                   errorView: CustomDialog(
                     isError: true,
                     message: controller.data?.message,
                     ignoreClick: false,
-                    buttonTitle: 'Retry',
-                    onPressed: () => controller.configureList(),
+                    firstButtonTitle: 'Retry',
+                    onPressedFirstButton: () => controller.configureList(),
                   ),
                   body: Builder(
                     builder: (context) {
                       return ListView.builder(
-                        // addAutomaticKeepAlives: true,
                         itemCount: controller.data!.data!.length,
                         itemBuilder: (BuildContext context, int index) {
                           return HistoryItem(data: controller.data!.data![index]);

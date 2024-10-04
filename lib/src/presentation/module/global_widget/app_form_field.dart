@@ -14,6 +14,7 @@ class AppFormField extends StatefulWidget {
     this.obscureText = false,
     this.suffixIcon,
     this.initialValue,
+    this.validateTextField,
     this.method
   }) : super(key: key);
   final String hintText;
@@ -26,6 +27,7 @@ class AppFormField extends StatefulWidget {
   final String? initialValue;
   final TextEditingController? fieldController;
   bool obscureText;
+  VoidCallback? validateTextField;
 
   @override
   State<AppFormField> createState() => _AppFormFieldState();
@@ -33,11 +35,29 @@ class AppFormField extends StatefulWidget {
 
 class _AppFormFieldState extends State<AppFormField> {
   bool hide = true;
+  late FocusNode myFocusNode;
+
 
   hideText() {
     setState(() {
       hide = !hide;
     });
+  }
+
+  @override void initState() {
+    super.initState();
+    myFocusNode = FocusNode();
+    myFocusNode.addListener(() {
+      if(!myFocusNode.hasFocus){
+        widget.validateTextField;
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    myFocusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -46,6 +66,7 @@ class _AppFormFieldState extends State<AppFormField> {
     return Padding(
       padding: const EdgeInsets.all(0.0),
       child: TextFormField(
+        focusNode: myFocusNode,
         inputFormatters: widget.inputFormatters,
         validator: widget.validator,
         obscureText: (widget.obscureText) ? hide : false,

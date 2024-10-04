@@ -9,9 +9,9 @@ class ApiClient {
     _dio = Dio(
       BaseOptions(
         baseUrl: EnvironmentSettings.baseUrl,
-        connectTimeout: Duration(seconds: 5),
-        receiveTimeout: Duration(seconds: 15),
-        sendTimeout: Duration(seconds: 5),
+        connectTimeout: Duration(seconds: 30),
+        receiveTimeout: Duration(seconds: 30),
+        sendTimeout: Duration(seconds: 30),
         contentType: "application/json",
       ),
     );
@@ -36,6 +36,18 @@ class ApiClient {
               "token" : token
             }
         ),
+    );
+    return response;
+  }
+
+  Future<Response> getSpeciesDetail(String token,String id) async {
+    Response response = await _dio.get(
+      'species/$id',
+      options: Options(
+          headers: {
+            "token" : token
+          }
+      ),
     );
     return response;
   }
@@ -69,6 +81,7 @@ class ApiClient {
   Future<Response> getPredictionHistoryImage(String token,String id) async {
     Response response = await _dio.get(
       'predictions/$id/image',
+      // onReceiveProgress: showDownloadProgress,
       options: Options(
           responseType: ResponseType.bytes,
           followRedirects: false,
@@ -127,6 +140,12 @@ class ApiClient {
       }
     );
     return response;
+  }
+
+  static void showDownloadProgress(received, total) {
+    if (total != -1) {
+      print((received / total * 100).toString() + "%");
+    }
   }
 
 

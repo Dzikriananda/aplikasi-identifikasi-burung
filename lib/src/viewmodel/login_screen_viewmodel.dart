@@ -36,6 +36,18 @@ class LoginScreenViewModel extends GetxController {
     }
   }
 
+  void bypassLogin() async {
+    status.value = Status.loading;
+    await Future.delayed(Duration(seconds: 4));
+    await repository.reOpenDBAfterLogout();
+    repository.saveToken('null');
+    status.value = Status.success;
+    Get.offAllNamed(RouteName.mainScreen);
+
+
+
+  }
+
   Future<void> getUserData(String token) async {
     BaseResponse response = await repository.getUserData();
     await repository.saveUserData(response.data);

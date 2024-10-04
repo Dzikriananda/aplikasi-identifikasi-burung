@@ -15,7 +15,8 @@ class Helper {
         }
         Get.defaultDialog(
             content: CircularProgressIndicator(),
-            title: 'Loading'
+            title: 'Loading',
+            barrierDismissible: false
         );
       }
       case Status.success : {
@@ -74,6 +75,7 @@ class Helper {
   }
 
   static Color getStatusColor(String conversationStatusString) {
+    print(conversationStatusString);
     late ConversationStatus status;
     MapConstant.conversationStatusMap.forEach((key, value) {
       if(conversationStatusString == key) {

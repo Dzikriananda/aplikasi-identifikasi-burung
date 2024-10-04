@@ -10,9 +10,9 @@ class HistoryCache {
   final int id;
 
   @HiveField(1)
-  final Uint8List imageData;
+  final String imagePath;
 
   HistoryCache({
-    required this.id,required this.imageData
+    required this.id,required this.imagePath
   });
 }

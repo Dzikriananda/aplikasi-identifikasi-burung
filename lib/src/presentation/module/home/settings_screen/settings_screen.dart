@@ -6,10 +6,12 @@ import 'package:bird_guard/src/presentation/module/global_widget/primary_button.
 import 'package:bird_guard/src/presentation/module/global_widget/profile_avatar.dart';
 import 'package:bird_guard/src/presentation/module/home/settings_screen/widget/setting_item.dart';
 import 'package:bird_guard/src/presentation/module/home/settings_screen/widget/setting_padding.dart';
+import 'package:bird_guard/src/route/app_route.dart';
 import 'package:bird_guard/src/route/route_name.dart';
 import 'package:bird_guard/src/viewmodel/system_controller.dart';
 import 'package:flag/flag.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
@@ -86,10 +88,11 @@ class SettingsScreen extends StatelessWidget {
                   onTap: () {
                     Get.defaultDialog(
                         title: 'settingItem_3_dialog_middleText'.tr,
-                        // textConfirm: "OK",
                         content: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 IconButton(
                                   onPressed: () {
@@ -107,6 +110,7 @@ class SettingsScreen extends StatelessWidget {
                             ),
                             SizedBox(height: 15),
                             Row(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 IconButton(
                                   onPressed: () {
@@ -123,6 +127,7 @@ class SettingsScreen extends StatelessWidget {
                               ],
                             )
                           ],
+
                         ),
                         cancel: PrimaryButton(
                           onPressed: () => Get.back(),
@@ -162,10 +167,33 @@ class SettingsScreen extends StatelessWidget {
               ),
               SettingPadding(
                 child: SettingItem(
-                  title: 'Cache Storage'.tr,
+                  title: 'settingItem_8'.tr,
                   prefixIcon: Icon(Icons.storage,size: 30),
-                  onTap: () {
-                    FileManager().getDirContent();
+                  onTap: ()  {
+                    Get.toNamed(RouteName.storageCacheManagementScreen);
+                    // var size = await FileManager().getDirSize();
+                    // final MethodChannel channel = const MethodChannel('com.dzikriananda.birdguard/channel');
+                    // try {
+                    //   var res = await channel.invokeMethod('getStorageInfo');
+                    //   print(res);
+                    // } on PlatformException catch (e) {
+                    //   print(e);
+                    // }
+                    // Get.defaultDialog(
+                    //   title: 'Cache',
+                    //   content: Row(
+                    //     children: [
+                    //       Text('Cache Size :'),
+                    //       Text('${size.toStringAsFixed(2)} Mb')
+                    //     ],
+                    //   ),
+                    //   confirm: PrimaryButton(
+                    //     title: 'Clear Cache',
+                    //     onPressed: ()  async {
+                    //       await controller.clearCache();
+                    //     },
+                    //   )
+                    // );
                   },
                 ),
               ),

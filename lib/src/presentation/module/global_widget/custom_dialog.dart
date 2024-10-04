@@ -1,4 +1,5 @@
 import 'package:bird_guard/src/presentation/module/global_widget/primary_button.dart';
+import 'package:bird_guard/src/presentation/module/global_widget/primary_button_outlined.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -7,18 +8,25 @@ class CustomDialog extends StatelessWidget {
     super.key,
     this.isError = false,
     this.ignoreClick = true,
-    this.buttonTitle,
-    this.onPressed,
+    this.needSecondaryButton = false,
+    this.firstButtonTitle,
+    this.onPressedFirstButton,
+    this.onPressedSecondaryButton,
+    this.secondaryButtonTitle,
     this.message,
     this.statusCode,
   });
 
   final bool isError;
   final bool ignoreClick;
+  final bool needSecondaryButton;
   final String? message;
-  final String? buttonTitle;
+  final String? firstButtonTitle;
+  final String? secondaryButtonTitle;
   final int? statusCode;
-  final VoidCallback? onPressed;
+  final VoidCallback? onPressedFirstButton;
+  final VoidCallback? onPressedSecondaryButton;
+
 
 
   @override
@@ -59,13 +67,28 @@ class CustomDialog extends StatelessWidget {
             SizedBox(height: 10.h),
             Visibility(
               visible: isError,
-              child: PrimaryButton(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  (needSecondaryButton) ?  PrimaryButtonOutlined(
                     onPressed: () {
-                      if(onPressed!=null) {
-                        onPressed!();
+                      if(onPressedSecondaryButton!=null) {
+                        onPressedSecondaryButton!();
                       }
-                },
-                title: buttonTitle,
+                    },
+                    title: 'Close',
+                  ) : Container(),
+                  (needSecondaryButton) ? SizedBox(width: 10) : Container(),
+                  PrimaryButton(
+                    onPressed: () {
+                      if(onPressedFirstButton!=null) {
+                        onPressedFirstButton!();
+                      }
+                    },
+                    title: firstButtonTitle,
+                  ),
+
+                ],
               )
             )
           ],

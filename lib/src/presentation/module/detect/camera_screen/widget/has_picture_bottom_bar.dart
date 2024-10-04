@@ -26,7 +26,7 @@ class HasPictureBottomBar extends GetView<CameraScreenViewModel> {
                 minimumSize: const Size.fromHeight(50),
               ),
               child: Text('Retake photo'.tr,style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Theme.of(context).colorScheme.onBackground,
+                  color: Theme.of(context).colorScheme.primary,
                   fontSize: 15.sp,
                   fontWeight: FontWeight.w500
               ))
@@ -43,7 +43,7 @@ class HasPictureBottomBar extends GetView<CameraScreenViewModel> {
                 ),
                 minimumSize: const Size.fromHeight(50),
               ),
-              child: Text('Scan this image'.tr,style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              child: Text('Scan'.tr,style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: Theme.of(context).colorScheme.onPrimary,
                   fontSize: 15.sp,
                   fontWeight: FontWeight.w500

@@ -10,6 +10,22 @@ class SystemRepository {
     return await storage.saveData('isDarkMode', value);
   }
 
+  Future<void> saveImageCompressionLevel(int level) async {
+    return await storage.saveData('imageCompressionLevel', level);
+  }
+
+  Future<int?> getImageCompressionLevel() async {
+    return await storage.readData('imageCompressionLevel');
+  }
+
+  Future<void> deleteCache() async {
+    return await storage.deleteCache();
+  }
+
+  Future<void> reOpenDatabase() async {
+    return await storage.reOpenBox();
+  }
+
   Future<bool?> getThemeMode() async {
     return await storage.readData('isDarkMode');
   }

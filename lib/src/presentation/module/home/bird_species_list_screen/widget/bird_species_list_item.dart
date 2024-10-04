@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:bird_guard/src/core/styles/custom_color.dart';
@@ -18,14 +19,15 @@ class BirdSpeciesListItem extends StatelessWidget {
   BirdSpeciesListScreenViewModel controller = Get.find<BirdSpeciesListScreenViewModel>();
   BirdSpeciesResponse data;
 
-  Future<Uint8List?> configureImage() async {
-    Uint8List? cache = await controller.getCachePreviewImage(data.id!);
+  Future<String?> configureImage() async {
+    String? cache = await controller.getCachePreviewImage(data.id!);
     if(cache==null) {
       Uint8List? dataImage = await controller.getPreviewImage(data.id.toString());
       if(dataImage!=null) {
-        controller.addSpeciesListCache(dataImage, data.id!);
+        await controller.addSpeciesListCache(dataImage, data.id!);
       }
-      return dataImage;
+      String? path = await controller.getCachePreviewImage(data.id!);
+      return path;
     } else {
       return cache;
     }
@@ -67,7 +69,10 @@ class BirdSpeciesListItem extends StatelessWidget {
                           if(snapshot.hasData) {
                             return FittedBox(
                               fit: BoxFit.fill,
-                              child: Image.memory(snapshot.data as Uint8List),
+                              child: Image.file(
+                                  File(snapshot.data as String),
+                                  gaplessPlayback: true,
+                              ),
                             );
                           } else {
                             return const Center(

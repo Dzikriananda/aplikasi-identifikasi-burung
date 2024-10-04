@@ -7,6 +7,7 @@ class MapConstant {
     'Critically Endangered (CR)' : ConversationStatus.cr,
     'Endangered (EN)' : ConversationStatus.en,
     'Least Concerned (LC)' : ConversationStatus.lc,
+    'Least Concerned' : ConversationStatus.lc,
     'Vulnerable (VU)' : ConversationStatus.vu
   };
 }

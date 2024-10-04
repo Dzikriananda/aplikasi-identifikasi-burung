@@ -15,25 +15,30 @@ class ProfileItem extends StatelessWidget {
             children: [
               icon ?? Container(),
               SizedBox(width: 10),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    profileItemName,
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22
+              Expanded(
+                child:  Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      profileItemName,
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 22
+                      ),
                     ),
-                  ),
-                  Text(
-                    '  ${profileData!}',
-                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: Color(0XFF808080)
+                    Padding(
+                      padding: EdgeInsets.only(left: 8),
+                      child: Text(
+                        profileData,
+                        style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: Color(0XFF808080)
 
-                    ),
-                  )
-                ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               )
             ],
           ),

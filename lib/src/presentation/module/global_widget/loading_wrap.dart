@@ -11,10 +11,13 @@ class LoadingWrap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedOpacity(
-      opacity: isLoading ? 1.0 : 0.0,
-      duration: const Duration(milliseconds: 500),
-      child: loadingWidget,
+    return IgnorePointer(
+      ignoring: true,
+      child: AnimatedOpacity(
+        opacity: isLoading ? 1.0 : 0.0,
+        duration: const Duration(milliseconds: 500),
+        child: loadingWidget,
+      ),
     );
   }
 }

@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:bird_guard/src/core/classes/enum.dart';
 import 'package:bird_guard/src/core/util/util.dart';
 import 'package:bird_guard/src/presentation/module/detect/detail_screen/widget/detail_padding.dart';
+import 'package:bird_guard/src/presentation/module/global_widget/detail_bird_image_loading.dart';
 import 'package:bird_guard/src/viewmodel/bird_detail_screen_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,20 +28,7 @@ class BirdSpeciesDetailScreen extends GetView<BirdDetailScreenViewModel> {
                   Obx(
                        () {
                         if(controller.status.value == Status.loading) {
-                          return SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            height: 250.h,
-                            child: Shimmer.fromColors(
-                              baseColor: Colors.grey[300]!,
-                              highlightColor: Colors.grey[100]!,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: Colors.grey[300]
-                                ),
-                              ),
-                            ),
-                          );
+                          return DetailBirdImageLoading();
                         } else if(controller.status.value == Status.success) {
                           return Container(
                             width: MediaQuery.of(context).size.width,
@@ -46,7 +36,7 @@ class BirdSpeciesDetailScreen extends GetView<BirdDetailScreenViewModel> {
                             decoration: BoxDecoration(
                                 image: DecorationImage(
                                   fit: BoxFit.fill,
-                                  image: MemoryImage(controller.imageData.value!),
+                                  image: FileImage(File(controller.imagePath.value!)),
                                 ),
                                 borderRadius: BorderRadius.circular(20)
                             ),

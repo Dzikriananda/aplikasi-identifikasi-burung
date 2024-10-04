@@ -1,17 +1,12 @@
+import 'dart:developer';
+
 import 'package:bird_guard/src/core/classes/enum.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
-
-
 
 class LocalStorage {
   late Box box;
   late Box historyBox;
   late Box speciesListBox;
-
-  // LocalStorage() {
-  //   init();
-  // }
 
   init() async {
     box = await Hive.openBox('localStorage');
@@ -23,6 +18,8 @@ class LocalStorage {
     if(!historyBox.isOpen && !speciesListBox.isOpen) {
       historyBox = await Hive.openBox('history');
       speciesListBox = await Hive.openBox('speciesList');
+    } else {
+      log('box diopen');
     }
   }
 
@@ -30,13 +27,13 @@ class LocalStorage {
     await box.put(key, value);
   }
 
-  Future<void> saveObject(boxType type,dynamic data,{String? key}) async {
+  Future<int?> saveObject(boxType type,dynamic data,{String? key}) async {
     switch(type) {
       case boxType.speciesList : {
-        await speciesListBox.add(data);
+        return await speciesListBox.add(data);
       }
       case boxType.history : {
-        await historyBox.add(data);
+        return await historyBox.add(data);
       }
       case boxType.general : {
           await box.put(key,data);
@@ -59,15 +56,12 @@ class LocalStorage {
     switch(type) {
       case boxType.speciesList : {
         var value = speciesListBox.values;
-        print(value);
       }
       case boxType.history : {
         var value = historyBox.values;
-        print(value);
       }
       case boxType.general : {
         var value = box.values;
-        print(value);
       }
     }
   }
@@ -132,9 +126,9 @@ class LocalStorage {
   // }
 
   Future<void> deleteCache() async {
-    // await box.deleteFromDisk();
     await historyBox.deleteFromDisk();
     await speciesListBox.deleteFromDisk();
+    await box.delete('imageCompressionLevel');
   }
 
   Future<void> closeDatabase() async {

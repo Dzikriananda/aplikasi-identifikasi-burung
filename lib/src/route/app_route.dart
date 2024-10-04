@@ -4,6 +4,7 @@ import 'package:bird_guard/src/core/binding/bird_detail_screen_binding.dart';
 import 'package:bird_guard/src/core/binding/bird_species_list_screen_binding.dart';
 import 'package:bird_guard/src/core/binding/camera_screen_binding.dart';
 import 'package:bird_guard/src/core/binding/detail_screen_binding.dart';
+import 'package:bird_guard/src/core/binding/history_detail_screen_binding.dart';
 import 'package:bird_guard/src/core/binding/history_screen_binding.dart';
 import 'package:bird_guard/src/core/binding/login_screen_binding.dart';
 import 'package:bird_guard/src/core/binding/register_screen_binding.dart';
@@ -19,6 +20,7 @@ import 'package:bird_guard/src/presentation/module/home/bottom_nav.dart';
 import 'package:bird_guard/src/presentation/module/home/history_detail_screen/history_detail_screen.dart';
 import 'package:bird_guard/src/presentation/module/home/history_screen/history_screen.dart';
 import 'package:bird_guard/src/presentation/module/home/profile_screen/profile_screen.dart';
+import 'package:bird_guard/src/presentation/module/home/storage_cache_management_screen/storage_cache_management_screen.dart';
 import 'package:bird_guard/src/route/route_name.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
@@ -78,7 +80,7 @@ class AppRoute {
       GetPage(
           name: RouteName.historyDetailScreen,
           page: () => HistoryDetailScreen(),
-          // binding: HistoryScreenBinding()
+          binding: HistoryDetailScreenBinding()
         // transitionDuration: Duration(seconds: 1),
         // transition: Transition.fadeIn
       ),
@@ -90,6 +92,10 @@ class AppRoute {
       GetPage(
         name: RouteName.profileScreen,
         page: () => ProfileScreen(),
+      ),
+      GetPage(
+        name: RouteName.storageCacheManagementScreen,
+        page: () => StorageCacheManagementScreen(),
       ),
     ];
   }
